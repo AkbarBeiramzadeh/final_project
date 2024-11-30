@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    post list
+{% endblock %}
+
+{% block content %}
+    {% for post in posts %}
+        <div style="background: #5b80b2; border-radius: 10px;margin: 10px;padding: 10px;">
+            <a href="{% url 'blog:post_detail' post.id %}">
+                <h4>{{ post.title }}</h4>
+            </a>
+            <p>{{ post.content }}</p>
+            <small>{{ post.author }}</small>
+        </div>
+    {% endfor %}
+{% endblock %}
