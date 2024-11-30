@@ -1,9 +1,12 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
 from .forms import UserRegistrationForm, UserLoginForm
 from .models import Profile
 from django.views import View
+from django.views.generic import UpdateView
+from django.urls import reverse_lazy
 
 User = get_user_model()
 
@@ -77,3 +80,17 @@ class UserLoginView(View):
                 return redirect('blog:home')
             messages.error(request, 'username or password is wrong', 'warning')
         return render(request, self.template_name, {'form': form})
+
+
+class EditProfileView(LoginRequiredMixin, UpdateView):
+    model = Profile
+    fields = ['first_name', 'last_name', 'description', 'image']
+    template_name = 'accounts/edit_profile.html'
+
+    # success_url = reverse_lazy('accounts:user_profile')
+
+    def get_object(self):
+        return Profile.objects.get(user=self.request.user)
+
+    def get_success_url(self):
+        return reverse_lazy('accounts:user_profile', args=[self.object.user.id])
