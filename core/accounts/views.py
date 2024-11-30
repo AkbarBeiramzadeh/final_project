@@ -23,7 +23,7 @@ class UserRegisterView(View):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('blog:post-list')
+            return redirect('blog:home')
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
@@ -36,7 +36,7 @@ class UserRegisterView(View):
             cd = form.cleaned_data
             User.objects.create_user(cd['email'], cd['password1'])
             messages.success(request, 'you registered successfully', 'success')
-            return redirect('blog:post-list')
+            return redirect('blog:home')
         return render(request, self.template_name, {'form': form})
 
 
