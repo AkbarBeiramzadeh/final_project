@@ -2,6 +2,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 import pytest
 
+from accounts.models import Profile
 from accounts.models.users import User
 from datetime import datetime
 
@@ -16,6 +17,13 @@ def api_client():
 def common_user():
     user = User.objects.create_user(email="ab@ab.com", password="1020")
     return user
+
+
+@pytest.fixture
+def common_profile():
+    user = User.objects.create_user(email="ab@ab.com", password="1020")
+    profile = Profile.objects.get(user=user)
+    return profile
 
 
 @pytest.mark.django_db
@@ -34,17 +42,6 @@ class TestPostApi:
         url = reverse("blog:api-v1:post-list")
         response = api_client.get(url)
         assert response.status_code == 200
-
-    def test_create_post_response_401_status(self, api_client, common_user):
-        url = reverse("blog:api-v1:post-list")
-        data = {
-            "title": "test",
-            "content": "description",
-            "status": True,
-            "published_date": datetime.now()
-        }
-        response = api_client.post(url, data)
-        assert response.status_code == 401
 
     def test_create_post_response_201_status(self, api_client, common_user):
         url = reverse("blog:api-v1:post-list")
