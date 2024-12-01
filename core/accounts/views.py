@@ -2,6 +2,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
+
+from blog.models import Post
 from .forms import UserRegistrationForm, UserLoginForm
 from .models import Profile
 from django.views import View
@@ -15,7 +17,7 @@ class ProfileView(View):
     def get(self, request, pk):
         user = get_object_or_404(User, pk=pk)
         profile = get_object_or_404(Profile, user=user)
-        posts = user.posts.all()
+        posts = Post.objects.filter(author=profile)
 
         return render(request, 'accounts/profile.html', {'user': user, 'profile': profile, 'posts': posts})
 
