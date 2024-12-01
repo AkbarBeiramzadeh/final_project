@@ -40,6 +40,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls', namespace='blog')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
+    path('comment/', include('comment.urls', namespace='comment')),
     path(
         "swagger/output.json",
         schema_view.without_ui(cache_timeout=0),
