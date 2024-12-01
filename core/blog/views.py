@@ -4,6 +4,8 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+
+from accounts.models import Profile
 from blog.forms import CommentCreateForm, CommentReplyForm, PostCreateUpdateForm
 from blog.models import Post
 from django.contrib import messages
@@ -53,7 +55,8 @@ class PostCreateView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             new_post = form.save(commit=False)
-            new_post.author = request.user
+            profile = Profile.objects.get(user=request.user)
+            new_post.author = profile
             new_post.save()
             messages.success(request, 'you created a new post', 'success')
             return redirect('blog:post_detail', new_post.id)
