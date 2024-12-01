@@ -3,6 +3,8 @@ from rest_framework.permissions import (
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
+from rest_framework.views import APIView
+import requests
 from rest_framework.response import Response
 from .serializers import PostSerializer, CategorySerializer
 from ...models import Post, Category
@@ -146,11 +148,6 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
-
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-import requests
 
 
 class WeatherApi(APIView):
