@@ -15,3 +15,6 @@ pytest-django
 faker
 django-mail-templated
 django-templated-mail
+gunicorn
+celery
+redis
