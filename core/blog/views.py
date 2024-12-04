@@ -18,7 +18,7 @@ class HomeView(ListView):
     context_object_name = 'posts'
 
 
-class PostDetailView(View):
+class PostDetailView(LoginRequiredMixin, View):
     form_class = CommentCreateForm
     form_class_reply = CommentReplyForm
 
@@ -44,7 +44,7 @@ class PostDetailView(View):
             return redirect('blog:post_detail', self.post_instance.id)
 
 
-class PostCreateView(View):
+class PostCreateView(LoginRequiredMixin, View):
     form_class = PostCreateUpdateForm
 
     def get(self, request, *args, **kwargs):
@@ -62,7 +62,7 @@ class PostCreateView(View):
             return redirect('blog:post_detail', new_post.id)
 
 
-class PostAddReplyView(View):
+class PostAddReplyView(LoginRequiredMixin, View):
     form_class = CommentReplyForm
 
     def post(self, request, post_id, comment_id):
